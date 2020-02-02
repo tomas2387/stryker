@@ -1,6 +1,9 @@
 import { Logger } from '@stryker-mutator/api/logging';
 import { commonTokens, tokens } from '@stryker-mutator/api/plugin';
-import jest from 'jest';
+import * as jest from 'jest';
+import { Config } from '@jest/types';
+
+import { JestRunResult } from '../jestTypes/JestRunResult';
 
 import JestTestAdapter from './JestTestAdapter';
 
@@ -8,7 +11,7 @@ export default class JestPromiseTestAdapter implements JestTestAdapter {
   public static inject = tokens(commonTokens.logger);
   constructor(private readonly log: Logger) {}
 
-  public run(jestConfig: jest.Configuration, projectRoot: string, fileNameUnderTest?: string): Promise<jest.RunResult> {
+  public run(jestConfig: Config.InitialOptions, projectRoot: string, fileNameUnderTest?: string): Promise<JestRunResult> {
     jestConfig.reporters = [];
     const config = JSON.stringify(jestConfig);
     this.log.trace(`Invoking Jest with config ${config}`);
@@ -22,7 +25,7 @@ export default class JestPromiseTestAdapter implements JestTestAdapter {
         config,
         runInBand: true,
         silent: true
-      },
+      } as any,
       [projectRoot]
     );
   }

@@ -1,7 +1,7 @@
-import { Config } from '@stryker-mutator/api/config';
+import { Config as StrykerConfig } from '@stryker-mutator/api/config';
 import { testInjector } from '@stryker-mutator/test-helpers';
 import { assert, expect } from 'chai';
-import jest from 'jest';
+import { Config } from '@jest/types';
 import * as sinon from 'sinon';
 
 import CustomJestConfigLoader, * as defaultJestConfigLoader from '../../src/configLoaders/CustomJestConfigLoader';
@@ -14,7 +14,7 @@ describe('JestConfigEditor', () => {
   let customConfigLoaderStub: ConfigLoaderStub;
   let reactScriptsJestConfigLoaderStub: ConfigLoaderStub;
   let reactScriptsTSJestConfigLoaderStub: ConfigLoaderStub;
-  let config: Config;
+  let config: StrykerConfig;
 
   beforeEach(() => {
     customConfigLoaderStub = sinon.createStubInstance(CustomJestConfigLoader);
@@ -25,7 +25,7 @@ describe('JestConfigEditor', () => {
     sinon.stub(reactScriptsJestConfigLoader, 'default').returns(reactScriptsJestConfigLoaderStub);
     sinon.stub(reactScriptsTSJestConfigLoader, 'default').returns(reactScriptsTSJestConfigLoaderStub);
 
-    const defaultOptions: Partial<jest.Configuration> = {
+    const defaultOptions: Partial<Config.InitialOptions> = {
       collectCoverage: true,
       verbose: true,
       bail: false,
@@ -36,7 +36,7 @@ describe('JestConfigEditor', () => {
     reactScriptsTSJestConfigLoaderStub.loadConfig.returns(defaultOptions);
 
     sut = testInjector.injector.injectClass(JestConfigEditor);
-    config = new Config();
+    config = new StrykerConfig();
   });
 
   it('should call the defaultConfigLoader loadConfig method when no projectType is defined', () => {

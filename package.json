@@ -1,5 +1,6 @@
 {
   "name": "stryker-parent",
+  "version": "1.0.2",
   "private": true,
   "devDependencies": {
     "@types/chai": "4.2.8",
